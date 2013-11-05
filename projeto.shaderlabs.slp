@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>trab2.vert</vertex>
+		<fragment>trab2.frag</fragment>
+	</shaders>
+	<model>
+		<id>1</id>
+	</model>
+	<textures>
+		<filename>heightmap.jpg</filename>
+		<filename>texture.jpg</filename>
+	</textures>
+</ShaderLab>

@@ -20,7 +20,7 @@ float height(vec3 p)
 
 vec3 color(vec3 p)
 {
-  return texture2D(sampler2d1, texCoord(p.xy));
+  return texture2D(sampler2d1, texCoord(p.xy)).xyz;   //ESTAVA COM ERRO return texture2D(sampler2d1, texCoord(p.xy));
 }
 
 void main()
@@ -31,7 +31,7 @@ void main()
 //	if ( height(p) < 0.5 ) discard;
 	
 	vec3 traceDir = normalize(p - camP.xyz);
-	float range = 0.01f;
+	float range = 0.01;
 	
 	vec3 stepTrace = range*traceDir;
     p.z = 1.0;
