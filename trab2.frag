@@ -79,7 +79,7 @@ void main()
 					for (int j=0; j<smallSteps; j++) 
 					{
 						p -= stepTrace;
-     			if (height(p)<= p.z) break;
+     				if (height(p)<= p.z) break;
 					}
 	       break;
 			 }
@@ -94,13 +94,6 @@ void main()
 		gl_FragColor.rgb = color(p);
 		
 
-
-	//if(p.z < 0.5) gl_FragColor.rgb = vec3(0.0,0.0,1.0);
-	/*colorir-teste
-
-		/*if(p.z < niveldoMar) 
-				gl_FragColor.rgb = texture2D(sampler2d2, texCoord(p.xy)).rgb;
-		else */ 
 
 
 		
