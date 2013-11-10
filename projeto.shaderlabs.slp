@@ -5,10 +5,11 @@
 		<fragment>trab2.frag</fragment>
 	</shaders>
 	<model>
-		<id>1</id>
+		<id>4</id>
 	</model>
 	<textures>
 		<filename>heightmap.jpg</filename>
 		<filename>texture.jpg</filename>
+		<filename>normal.jpg</filename>
 	</textures>
 </ShaderLab>

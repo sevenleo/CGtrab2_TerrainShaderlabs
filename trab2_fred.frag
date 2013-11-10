@@ -1,6 +1,6 @@
 uniform sampler2D sampler2d0; //altura
 uniform sampler2D sampler2d1; //textura
-uniform sampler2D sampler2d2; //normal
+uniform sampler2D sampler2d2; //agua
 
 
 varying vec4 enterPoint;
