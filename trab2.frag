@@ -6,7 +6,7 @@ uniform sampler2D sampler2d2; //agua
 varying vec4 enterPoint;
 
 int nSteps = 200;
-float profundidade = 0.25;
+float profundidade = -0.25;
 float niveldoMar = 0.15;
 float smallSteps = 0.1;
 float range = 0.01; 
@@ -31,7 +31,9 @@ float height(vec3 p)
 }
 
 
-
+vec3 normal(vec3 p) {
+	return texture2D(sampler2d2, texCoord(p.xy)).rgb;
+}
 
 
 //retorna a cor da textura para aquele ponto
@@ -47,10 +49,12 @@ vec3 color(vec3 p)
 
 void main()
 {
+
 	vec4 camP = ((gl_ModelViewMatrixInverse * vec4(0.0,0.0,0.0,1.0)));
 
 	vec3 p = enterPoint.xyz;
 //	if ( height(p) < 0.5 ) discard; //descatar regioes baixas
+
 
 	
 	vec3 traceDir = normalize(p - camP.xyz); //calcula o vetor unitario de direcao entre a camera e o ponto
@@ -89,10 +93,16 @@ void main()
     }
 
 
-		
-  	gl_FragColor.a = 1.0;
-		gl_FragColor.rgb = color(p);
-		
+if (enterPoint.z < height(p)){ gl_FragColor.a = 1.0;}
+else { gl_FragColor.a = 0.0;  }
+//  	gl_FragColor.a = 1.0;
+gl_FragColor.rgb = color(p) * dot(traceDir, normal(p));//		gl_FragColor.rgb = color(p);
+
+	/*	if (enterPoint.z < 0.9999999){ 
+			gl_FragColor.a = 0.0; 
+			enterPoint.z -=0.5;
+			return; 
+		}*/
 
 
 
