@@ -1,9 +1,15 @@
 uniform sampler2D sampler2d0; //altura
 uniform sampler2D sampler2d1; //textura
 uniform sampler2D sampler2d2; //normal
-
+uniform sampler2D sampler2d3; //regras de escolha de textura
+uniform sampler2D sampler2d4; //agua
+uniform sampler2D sampler2d5; //agua normal
+uniform sampler2D sampler2d6; //neve
+uniform sampler2D sampler2d7; //neve normal
 
 varying vec4 enterPoint;
+
+
 
 int nSteps = 200;
 float profundidade = 0.25;
@@ -40,18 +46,45 @@ vec3 color(vec3 p)
 }
 
 
+vec3 escolheTextura(vec3 p) {
+	return texture2D(sampler2d3, texCoord(p.xy)).rgb;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 void main()
 {
 	
-
 	vec4 camP = ((gl_ModelViewMatrixInverse * vec4(0.0,0.0,0.0,1.0)));
 
 	vec3 p = enterPoint.xyz;
 
 	if (enterPoint.z < height(p))discard;
+
+
+
+
+
+
+
 	
 	vec3 traceDir = normalize(p - camP.xyz); //calcula o vetor unitario de direcao entre a camera e o ponto
 float angulo = dot(traceDir, ( gl_ModelViewMatrix * vec4(0.0,1.0,0.0,1.0)).xyz);  
@@ -100,9 +133,41 @@ float angulo = dot(traceDir, ( gl_ModelViewMatrix * vec4(0.0,1.0,0.0,1.0)).xyz);
 
 
 
- 	gl_FragColor.a = 1.0;
+	//regras //
+	vec3 mapaTextura = escolheTextura(p);
 
-gl_FragColor.rgb = color(p) * dot((normalize(lightDir.xyz - p)), normal(p) ) ;
+	//nao desenhar regioes pretas
+	
+	if ( mapaTextura == vec3(0.0,0.0,0.0) ) {
+			gl_FragColor.a = .0;
+	}
+
+
+
+	else //if ( mapaTextura == vec3(1.0,0.0,0.0) || mapaTextura == vec3(1.0,1.0,1.0) || mapaTextura == vec3(0.0,0.0,1.0)) 
+	{
+ 			gl_FragColor.a = 1.0;
+			gl_FragColor.rgb = color(p) * dot((normalize(lightDir.xyz - p)), normal(p) ) ;
+
+
+			//agua
+			if ( escolheTextura(p) == vec3(0.0,0.0,1.0) ) {
+					vec3 watercolor = texture2D(sampler2d4, texCoord(p.xy)).rgb;
+					vec3 waternormal = texture2D(sampler2d5, texCoord(p.xy)).rgb;
+					gl_FragColor.rgb= watercolor* dot((normalize(lightDir.xyz - p)), waternormal ) ;		
+					gl_FragColor.a = 0.7;
+			}
+
+			//neve
+			if ( escolheTextura(p) == vec3(1.0,1.0,1.0) ) //neve
+			{
+						
+						gl_FragColor.rgb = vec3(1.0,1.0,1.0) * dot((normalize(lightDir.xyz - p)), normal(p) ) ;
+						gl_FragColor.a = 1.0;
+						return;
+			}
+
+	}	
 
 
 

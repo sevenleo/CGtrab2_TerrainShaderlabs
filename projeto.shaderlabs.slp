@@ -11,6 +11,8 @@
 		<filename>heightmap.jpg</filename>
 		<filename>texture.jpg</filename>
 		<filename>normal.jpg</filename>
-		<filename>regras2.png</filename>
+		<filename>regras3.png</filename>
+		<filename>water.jpg</filename>
+		<filename>waterN.jpg</filename>
 	</textures>
 </ShaderLab>
