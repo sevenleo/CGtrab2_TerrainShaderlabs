@@ -14,5 +14,7 @@
 		<filename>regras3.png</filename>
 		<filename>water.jpg</filename>
 		<filename>waterN.jpg</filename>
+		<filename>snow.jpg</filename>
+		<filename>snowN.jpg</filename>
 	</textures>
 </ShaderLab>
