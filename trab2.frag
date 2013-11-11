@@ -7,9 +7,9 @@ uniform sampler2D sampler2d3; //regras de escolha de textura
 varying vec4 enterPoint;
 
 int nSteps = 200;
-float profundidade = -0.5;
+float profundidade = 0.5;
 float niveldoMar = 0.15;
-float smallSteps = 0.1;
+float smallSteps = 10;
 float range;
 float diagonaldocubo = 1.74; // raizde3
 float extremidade = 0.9999999; //como é um cuboas extriidades sao todas nos pontos 1 e -1
@@ -67,17 +67,19 @@ void main(){
 			if (enterPoint.z < height(p)) discard; 
 
 			//nao desenhar regioes pretas
-			if ( escolheTextura(p) == vec3(0.0,0.0,0.0) ) discard; 
+		//	if ( escolheTextura(p) == vec3(0.0,0.0,0.0) ) discard; 
 						
 			
 			
 			//agua
+/*
 			 if ( escolheTextura(p) == vec3(0.0,0.0,1.0) ) 
 			{
+
 						gl_FragColor.rgb = vec3(0.0,0.0,1.0);
 						gl_FragColor.a = 0.5;
 
-			}
+			}*/
 
 
 			//desenhar normalmente
@@ -105,20 +107,20 @@ void main(){
 						  if (p.y > extremidade || p.y < -extremidade)   discard;
 
 						  if (height(p)>=p.z){
-									range=range*0.1;
+									range=range/smallSteps;
 									stepTrace = range*traceDir;
-								smallSteps = (nSteps - i)*smallSteps; //passos que sobraram divididos por uma quantidade arbitraria para manter o desempenho do porecessaor e da GPU
 								for (int j=0; j<smallSteps; j++) 
 									{
 								 p -= stepTrace;
 								 if (height(p)<= p.z) break;
 								  }
-							   break;
+							  
 						  }
 						  p += stepTrace; //reduz p, visto que a camera esta no alto
 								
 								
 				}
+
 
 
 				//neve
@@ -129,17 +131,23 @@ void main(){
 						return;
 				}
 
-				vec3 lightDir = normalize(gl_LightSource[0].position.xyz - enterPoint.xyz);
-				gl_FragColor.rgb = color(p) * dot(lightDir, normal(p) ) ;
-				gl_FragColor.a = 1.0;
+				//agua
+			 if ( escolheTextura(p) == vec3(0.0,0.0,1.0) ) 
+			{
+						p.z=1.0;
+						gl_FragColor.rgb = vec3(0.0,0.0,1.0);
+						gl_FragColor.a = 0.5;
+						return;
+
 			}
 
+				vec4 lightDir = normalize(gl_ModelViewMatrix * gl_LightSource[0].position);
+				gl_FragColor.rgb = color(p) * dot(lightDir.xyz, normal(p) ) ;
+				gl_FragColor.a = 1.0;
 
 
+			}
 
-
-
-		
 
 
           
